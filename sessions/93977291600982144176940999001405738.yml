@@ -1,3 +1,5 @@
 --- !!perl/hash:Dancer::Session::YAML
 id: 93977291600982144176940999001405738
 nick: haha
+uid: !!perl/hash:MongoDB::OID
+  value: 51cd07e7c9f7e6c4c3000002
