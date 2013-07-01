@@ -3,6 +3,7 @@ package perlchat;
 use Dancer ':syntax';
 use Digest::SHA1 qw(sha1_hex);
 use MongoDB;
+use URI::Escape::JavaScript;
 
 our $VERSION = '0.1';
 
@@ -63,16 +64,22 @@ post '/login' => sub {
 get "/room" => sub {
     my $room = db->get_collection("rooms")->find_one();
     if ($room) {
-        redirect "/room/" . $room->{'_id'}->value();
+        redirect "/room/" . $room->{'_id'}->value() . "/";
     } else {
         "error";
     }
 };
 
-get "/room/:roomid" => sub {
+get "/room/:roomid/:subject?" => sub {
     my $room = db->get_collection("rooms")->find_one({_id => MongoDB::OID->new(value => param("roomid"))});
+    my $subject = param("subject");
+    if ($subject) {
+        $subject = js_unescape($subject);
+    } else {
+        $subject = "";
+    }
     if ($room) {
-        template 'room' => { room => $room, nick => session("nick") };
+        template 'room' => { room => $room, subject => $subject };
     } else {
         return "error";
     }
@@ -85,11 +92,11 @@ post "/api/sendmsg" => sub {
         my $subject;
         if (param("msg") =~ /#(.*?)#/) {
             $subject = $1;
-            db->get_collection("messages")->insert({subject => $subject, uid => $uid, nick => $nick, msg => param("msg"), roomid => MongoDB::OID->new(value => param("roomid")), sendtime => time});
-            db->get_collection("subjects")->update(
+            db->get_collection("messages")->insert({subject => $subject, uid => $uid, nick => $nick, msg => param("msg"), roomid => param("roomid"), sendtime => time});
+            my $val = db->get_collection("subjects")->update(
                 {
                     title => $subject,
-                    roomid => MongoDB::OID->new(value => param("roomid"))
+                    roomid => param("roomid")
                 },
                 {
                     '$inc' => { 'msg_count' => 1},
@@ -97,8 +104,9 @@ post "/api/sendmsg" => sub {
                 },
                 {upsert => 1}
             );
+            debug $val;
         } else {
-            db->get_collection("messages")->insert({uid => $uid, nick => $nick, msg => param("msg"), roomid => MongoDB::OID->new(value => param("roomid")), sendtime => time});
+            db->get_collection("messages")->insert({uid => $uid, nick => $nick, msg => param("msg"), roomid => param("roomid"), sendtime => time});
         }
     } else {
         "error";
@@ -107,13 +115,24 @@ post "/api/sendmsg" => sub {
 
 get "/api/getmessages/:roomid/:subject/:laststamp" => sub {
     my $laststamp = param("laststamp");
-    debug "laststamp " . $laststamp;
-    my @messages = db->get_collection("messages")->find({
-        roomid => MongoDB::OID->new(value => param("roomid")),
+    my $subject = js_unescape(param("subject"));
+    my $condition = {
+        roomid => param("roomid"),
         'sendtime' => {'$gt' => 0 + $laststamp}
-    })->sort({sendtime => 1})->all();
-    debug (@messages);
+    };
+    if ($subject ne "all") {
+        $condition->{'subject'} = $subject;
+    }
+    my @messages = db->get_collection("messages")->find($condition)->sort({sendtime => 1})->all();
+    debug param("subject");
     return \@messages;
+};
+
+get "/api/getsubjects/:roomid" => sub {
+    my @subjects = db->get_collection("subjects")->find({
+        roomid => param("roomid"),
+    })->sort({uptime => 1})->all();
+    return \@subjects;
 };
 
 

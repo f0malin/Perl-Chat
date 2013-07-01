@@ -1,0 +1,34 @@
+<style type="text/css">
+  
+  #chat-window {
+      border: 1px solid #dcdcdc;
+      height: 400px;
+      padding: 5px;
+      overflow-y: auto;
+  }
+      
+  
+</style>
+
+<div class="row">
+  <div class="span8">
+    <h2><% room.name %> <small><% IF subject %>- <% subject %><% ELSE %>- 全部<% END %> </small></h2>
+    <div id="chat-window">
+    </div>
+    <p> </p>
+    <div id="input-window">
+      <textarea rows="3" class="span8" id="content"></textarea>
+    </div>
+    <button class="btn btn-primary" id="btn_send">发送</button>
+  </div>
+  
+  <div class="span4">
+    <div id="subject-window" class="alert alert-success">
+      全部
+    </div>
+  </div>
+</div>
+<script>
+  var nick = '<% session.nick %>';
+</script>
+<script src="/javascripts/room.js"></script>
