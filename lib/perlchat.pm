@@ -17,6 +17,7 @@ sub password {
 sub db {
     if (!$_db) {
         my $client = MongoDB::MongoClient->new(host => '127.0.0.1', port => 27017);
+        $client->connect();
         $_db = $client->get_database('perlchat');
     }
     return $_db;
