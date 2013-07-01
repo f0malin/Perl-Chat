@@ -4,6 +4,7 @@ use Dancer ':syntax';
 use Digest::SHA1 qw(sha1_hex);
 use MongoDB;
 use URI::Escape::JavaScript;
+use Time::HiRes qw(time);
 
 our $VERSION = '0.1';
 
@@ -115,16 +116,16 @@ post "/api/sendmsg" => sub {
 
 get "/api/getmessages/:roomid/:subject/:laststamp" => sub {
     my $laststamp = param("laststamp");
+
     my $subject = js_unescape(param("subject"));
     my $condition = {
         roomid => param("roomid"),
-        'sendtime' => {'$gt' => 0 + $laststamp}
+        'sendtime' => {'$gt' => 0.0001 + $laststamp}
     };
     if ($subject ne "all") {
         $condition->{'subject'} = $subject;
     }
     my @messages = db->get_collection("messages")->find($condition)->sort({sendtime => 1})->all();
-    debug param("subject");
     return \@messages;
 };
 

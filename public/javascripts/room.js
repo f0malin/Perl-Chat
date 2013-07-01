@@ -76,8 +76,13 @@ function getSubject() {
 
 function sendMsg() {
     var content = $("#content");
+    var msg = content.val();
+    var subject = unescape(esubject);
+    if (subject && subject != "all") {
+        msg = "#"+subject+"# " + msg;
+    }
     if (roomid) {
-        $.post("/api/sendmsg", {roomid:roomid, msg:content.val()}, function() {
+        $.post("/api/sendmsg", {roomid:roomid, msg:msg}, function() {
             
         });
         content.val("");
