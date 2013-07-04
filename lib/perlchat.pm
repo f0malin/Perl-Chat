@@ -16,11 +16,14 @@ sub password {
 
 sub db {
     if (!$_db) {
-        my $client = MongoDB::MongoClient->new(host => '127.0.0.1', port => 27017);
-        $client->connect();
-        $_db = $client->get_database('perlchat');
-    }
+        my $_dbclient = MongoDB::MongoClient->new(host => '127.0.0.1', port => 27017);
+        $_db = $_dbclient->get_database('perlchat');
+    }    
     return $_db;
+}
+
+sub reset_db {
+    undef $_db;
 }
 
 db->get_collection("users")->ensure_index({nick => 1}, {unique => true});
@@ -31,12 +34,16 @@ eval {
     db->get_collection("rooms")->insert({name => 'PerlChina', desc => 'Perl中国社区', notify => 'PerlChina大会将于8月10日在北京举行'});
 };
 
+reset_db();
+
+debug "out pid: $$";
+
 get '/' => sub {
     if (!session('nick')) {
         redirect "/login";
         return;
     }
-    "ok";
+    redirect "/room";
 };
 
 get '/login' => sub {

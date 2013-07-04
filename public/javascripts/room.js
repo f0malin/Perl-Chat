@@ -19,8 +19,12 @@ $("#btn_send").on("click", function() {
 
 $("#content").on("keypress", function(e) {
     if (e.which && e.which == 13) {
-        sendMsg();
-        e.preventDefault();
+        if (e.ctrlKey) {
+            e.ctrlKey = false;
+        } else {
+            sendMsg();
+            e.preventDefault();
+        }
     }
 });
 
@@ -90,5 +94,5 @@ function sendMsg() {
 }
 
 function escapeHtml(str) {
-    return str.replace("<", "&lt;").replace(">", "&gt;");
+    return str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>");
 }
