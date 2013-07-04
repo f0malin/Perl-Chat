@@ -32,6 +32,7 @@ $("#content").focus();
 
 setInterval(getMsgs, 500);
 
+var lastScroll = 0;
 function getMsgs() {
     getting_message = true;
 
@@ -40,6 +41,8 @@ function getMsgs() {
         dataType: "json",
         success: function(data) {
             var i;
+            var chatwindow = document.getElementById("chat-window");
+                
             for (i=0;i<data.length;i++) {
                 var date = new Date();
                 date.setTime(data[i].sendtime * 1000);
@@ -50,8 +53,12 @@ function getMsgs() {
                 }
                 laststamp = data[i].sendtime;
             }
-            var chatwindow = document.getElementById("chat-window");
-            chatwindow.scrollTop = chatwindow.scrollHeight;
+            if (chatwindow.scrollTop >= lastScroll) { 
+                chatwindow.scrollTop = chatwindow.scrollHeight;
+                lastScroll = chatwindow.scrollTop;
+            }
+
+
         },
         complete: function() {
             getSubject();
