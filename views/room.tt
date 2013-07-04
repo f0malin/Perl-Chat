@@ -9,7 +9,7 @@
       
   
 </style>
-
+<p>github: <a href="https://github.com/formalin14/Perl-Chat">https://github.com/formalin14/Perl-Chat</a></p>
 <div class="row">
   <div class="span8">
     <h2><% room.name %> <small><% IF subject %>- <% subject %><% ELSE %>- 全部<% END %> </small></h2>
