@@ -47,9 +47,9 @@ function getMsgs() {
                 var date = new Date();
                 date.setTime(data[i].sendtime * 1000);
                 if (data[i].nick == nick) {
-                    $("#chat-window").append("<div class='alert alert-warning'>"+date.getHours() + ":" + date.getMinutes()+" <strong>我：</strong>" + escapeHtml(data[i].msg) + "</div>");
+                    $("#chat-window").append("<div class='alert alert-warning span6 pull-right' style='text-align:right'>"+date.getHours() + ":" + date.getMinutes()+" <strong>我：</strong>" + escapeHtml(data[i].msg) + "</div>");
                 } else {
-                    $("#chat-window").append("<div class='alert alert-info'>"+date.getHours() + ":" + date.getMinutes()+" <strong>" + escapeHtml(data[i].nick) + "：</strong>" + escapeHtml(data[i].msg) + "</div>");
+                    $("#chat-window").append("<div class='alert alert-info span6'>"+date.getHours() + ":" + date.getMinutes()+" <strong>" + escapeHtml(data[i].nick) + "：</strong>" + escapeHtml(data[i].msg) + "</div>");
                 }
                 laststamp = data[i].sendtime;
             }

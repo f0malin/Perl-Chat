@@ -19,7 +19,7 @@
     <div id="input-window">
       <textarea rows="3" class="span8" id="content"></textarea>
     </div>
-    <button class="btn btn-primary" id="btn_send">发送</button>
+    <button class="btn btn-primary" id="btn_send">发送</button> 提示：按Ctrl+回车可以换行
   </div>
   
   <div class="span4">
