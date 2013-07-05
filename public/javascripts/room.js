@@ -30,7 +30,7 @@ $("#content").on("keypress", function(e) {
 
 $("#content").focus();
 
-setInterval(getMsgs, 500);
+setInterval(getMsgs, 1000);
 
 var lastScroll = 0;
 function getMsgs() {
@@ -47,9 +47,9 @@ function getMsgs() {
                 var date = new Date();
                 date.setTime(data[i].sendtime * 1000);
                 if (data[i].nick == nick) {
-                    $("#chat-window").append("<div class='alert alert-warning span6 pull-right' style='text-align:right'>"+date.getHours() + ":" + date.getMinutes()+" <strong>我：</strong>" + do_filters(data[i].msg) + "</div>");
+                    $("#chat-window").append("<div class='alert alert-warning span6 pull-right' style='text-align:right'><em>"+date.getHours() + ":" +  (date.getMinutes() >=10 ?"":"0") + date.getMinutes()+"</em> <strong>我</strong><br/>" + do_filters(data[i].msg) + "</div>");
                 } else {
-                    $("#chat-window").append("<div class='alert alert-info span6'>"+date.getHours() + ":" + date.getMinutes()+" <strong>" + escapeHtml(data[i].nick) + "：</strong>" + do_filters(data[i].msg) + "</div>");
+                    $("#chat-window").append("<div class='alert alert-info span6'><strong>" + escapeHtml(data[i].nick) + "</strong> <em>"+date.getHours() + ":" + (date.getMinutes() >=10 ?"":"0") + date.getMinutes()+"</em><br/>" + do_filters(data[i].msg) + "</div>");
                 }
                 laststamp = data[i].sendtime;
             }
