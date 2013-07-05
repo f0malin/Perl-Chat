@@ -47,9 +47,9 @@ function getMsgs() {
                 var date = new Date();
                 date.setTime(data[i].sendtime * 1000);
                 if (data[i].nick == nick) {
-                    $("#chat-window").append("<div class='alert alert-warning span6 pull-right' style='text-align:right'>"+date.getHours() + ":" + date.getMinutes()+" <strong>我：</strong>" + escapeHtml(data[i].msg) + "</div>");
+                    $("#chat-window").append("<div class='alert alert-warning span6 pull-right' style='text-align:right'>"+date.getHours() + ":" + date.getMinutes()+" <strong>我：</strong>" + do_filters(data[i].msg) + "</div>");
                 } else {
-                    $("#chat-window").append("<div class='alert alert-info span6'>"+date.getHours() + ":" + date.getMinutes()+" <strong>" + escapeHtml(data[i].nick) + "：</strong>" + escapeHtml(data[i].msg) + "</div>");
+                    $("#chat-window").append("<div class='alert alert-info span6'>"+date.getHours() + ":" + date.getMinutes()+" <strong>" + escapeHtml(data[i].nick) + "：</strong>" + do_filters(data[i].msg) + "</div>");
                 }
                 laststamp = data[i].sendtime;
             }
@@ -102,4 +102,20 @@ function sendMsg() {
 
 function escapeHtml(str) {
     return str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>");
+}
+
+var matchPIC = new RegExp("((?:http|https|ftp|mms|rtsp)://(&(?=amp;)|[A-Za-z0-9\./=\?%_~@#:;\+\-])+(gif|jpg|png))", "ig");
+var matchURL = new RegExp("((?:http|https|ftp|mms|rtsp)://(&(?=amp;)|[A-Za-z0-9\./=\?%_~@&#:;\+\-])+)","ig");
+
+function do_filters(str) {
+    str = escapeHtml(str);
+    var str2 ="";
+    str2 =str.replace("&nbsp;"," ");
+    
+    if(matchPIC.test(str)){
+        str2 = (str2.replace(matchPIC, "<img src=\"$1\" hint=\"$1\"></img>"));
+    }else{
+        str2 = (str2.replace(matchURL, "<a target=\"_blank\" href=\"$1\">$1</a>"));
+    }
+    return str2;
 }
