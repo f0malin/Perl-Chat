@@ -42,7 +42,7 @@ function getMsgs() {
         success: function(data) {
             var i;
             var chatwindow = document.getElementById("chat-window");
-                
+
             for (i=0;i<data.length;i++) {
                 var date = new Date();
                 date.setTime(data[i].sendtime * 1000);
@@ -53,7 +53,7 @@ function getMsgs() {
                 }
                 laststamp = data[i].sendtime;
             }
-            if (chatwindow.scrollTop >= lastScroll) { 
+            if (chatwindow.scrollTop >= lastScroll) {
                 chatwindow.scrollTop = chatwindow.scrollHeight;
                 lastScroll = chatwindow.scrollTop;
             }
@@ -94,7 +94,7 @@ function sendMsg() {
     }
     if (roomid) {
         $.post("/api/sendmsg", {roomid:roomid, msg:msg}, function() {
-            
+
         });
         content.val("");
     }
@@ -111,11 +111,15 @@ function do_filters(str) {
     str = escapeHtml(str);
     var str2 ="";
     str2 =str.replace("&nbsp;"," ");
-    
+
     if(matchPIC.test(str)){
         str2 = (str2.replace(matchPIC, "<img src=\"$1\" hint=\"$1\"></img>"));
     }else{
         str2 = (str2.replace(matchURL, "<a target=\"_blank\" href=\"$1\">$1</a>"));
     }
     return str2;
+}
+
+function find_at() {
+    //\@([^\s]+)
 }
