@@ -127,8 +127,44 @@ function find_at(str) {
     if (users) {
         for (i = 0; i < users.length; i++) {
             if (users[i] == '@' + nick) {
-                alert('有人@了你');
-            }
+                 var timerArr = $.blinkTitle.show();
+                 setInterval(function() {        //此处是过一定时间后自动消失
+                                        $.blinkTitle.clear(timerArr);
+                                     }, 15000)
+                }
         }
     }
 }
+
+(function($) {
+         $.extend({
+             /**
+              * 调用方法： var timerArr = $.blinkTitle.show();
+              *            $.blinkTitle.clear(timerArr);
+              */
+             blinkTitle : {
+                 show : function() {    //有新消息时在title处闪烁提示
+                    var step=0
+                     _title = 'Perl Chat';
+                     var timer = setInterval(function() {
+                         step++;
+                         if (step==3) {step=1};
+                         if (step==1) { document.title='[]'};
+                         if (step==2) { document.title='[有人@你]'};
+                     }, 1000);
+                     return [timer, _title];
+                 },
+
+                 /**
+                  * @param timerArr[0], timer标记
+                 * @param timerArr[1], 初始的title文本内容
+                 */
+                 clear : function(timerArr) {    //去除闪烁提示，恢复初始title文本 '【新消息】'+document.title;
+                     if(timerArr) {
+                         clearInterval(timerArr[0]);
+                         document.title = timerArr[1];
+                     };
+                 }
+             }
+         });
+     })(jQuery);
