@@ -149,8 +149,8 @@ function find_at(str) {
                      var timer = setInterval(function() {
                          step++;
                          if (step==3) {step=1};
-                         if (step==1) { document.title='[]'};
-                         if (step==2) { document.title='[有人@你]'};
+                         if (step==1) { document.title= '@' + nick};
+                         if (step==2) { document.title= '你妈妈叫你回家吃饭！'};
                      }, 1000);
                      return [timer, _title];
                  },
