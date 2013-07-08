@@ -103,7 +103,7 @@ function sendMsg() {
 }
 
 function escapeHtml(str) {
-    return str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>");
+    return str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>").replace("&nbsp;", " ");
 }
 
 var matchPIC = new RegExp("((?:http|https|ftp|mms|rtsp)://(&(?=amp;)|[A-Za-z0-9\./=\?%_~@#:;\+\-])+(gif|jpg|png))", "ig");
@@ -111,15 +111,13 @@ var matchURL = new RegExp("((?:http|https|ftp|mms|rtsp)://(&(?=amp;)|[A-Za-z0-9\
 
 function do_filters(str) {
     str = escapeHtml(str);
-    var str2 = "";
-    str2 = str.replace("&nbsp;", " ");
-    find_at(str2);
+    find_at(str);
     if (matchPIC.test(str)) {
-        str2 = (str2.replace(matchPIC, "<img src=\"$1\" hint=\"$1\"></img>"));
+        str = (str.replace(matchPIC, "<img src=\"$1\" hint=\"$1\"></img>"));
     } else {
-        str2 = (str2.replace(matchURL, "<a target=\"_blank\" href=\"$1\">$1</a>"));
+        str = (str.replace(matchURL, "<a target=\"_blank\" href=\"$1\">$1</a>"));
     }
-    return str2;
+    return str;
 }
 
 function find_at(str) {
@@ -159,7 +157,7 @@ function find_at(str) {
                   * @param timerArr[0], timer标记
                  * @param timerArr[1], 初始的title文本内容
                  */
-                 clear : function(timerArr) {    //去除闪烁提示，恢复初始title文本 '【新消息】'+document.title;
+                 clear : function(timerArr) {    //去除闪烁提示
                      if(timerArr) {
                          clearInterval(timerArr[0]);
                          document.title = timerArr[1];

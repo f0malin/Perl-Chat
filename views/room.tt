@@ -1,13 +1,13 @@
 <style type="text/css">
-  
+
   #chat-window {
       border: 1px solid #dcdcdc;
       height: 400px;
       padding: 5px;
       overflow-y: auto;
   }
-      
-  
+
+
 </style>
 <p>github: <a href="https://github.com/formalin14/Perl-Chat">https://github.com/formalin14/Perl-Chat</a></p>
 <div class="row">
@@ -21,7 +21,7 @@
     </div>
     <button class="btn btn-primary" id="btn_send">发送</button> 提示：按Ctrl+回车可以换行
   </div>
-  
+
   <div class="span4">
     <div id="subject-window" class="alert alert-success">
       全部

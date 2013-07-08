@@ -18,7 +18,7 @@ sub db {
     if (!$_db) {
         my $_dbclient = MongoDB::MongoClient->new(host => '127.0.0.1', port => 27017);
         $_db = $_dbclient->get_database('perlchat');
-    }    
+    }
     return $_db;
 }
 
@@ -88,7 +88,7 @@ get "/room/:roomid/:subject?" => sub {
         $subject = "";
     }
     if ($room) {
-        template 'room' => { room => $room, subject => $subject };
+        template 'room' => { room => $room, subject => $subject , hadlogin => 1};
     } else {
         return "error";
     }
@@ -144,5 +144,11 @@ get "/api/getsubjects/:roomid" => sub {
     return \@subjects;
 };
 
+get '/loginout'=> sub{
+    if (session('nick')) {
+        session 'nick' => undef;
+    }
+    redirect "/login";
+};
 
 true;
