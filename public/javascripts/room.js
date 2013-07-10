@@ -26,6 +26,8 @@ $("#content").on("keypress", function(e) {
     }
 });
 
+$("#clear_msgs").on("click",function(){$("#chat-window").empty(); });
+
 $("#content").focus();
 
 setInterval(getMsgs, 1000);
