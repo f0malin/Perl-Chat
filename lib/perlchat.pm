@@ -135,7 +135,6 @@ get "/api/getmessages/:roomid/:subject/:laststamp" => sub {
     }
     #my @messages = db->get_collection("messages")->find($condition)->sort({sendtime => 1})->all();
     my @messages = db->get_collection("messages")->find($condition)->sort({sendtime => -1})->limit(10)->all();
-       @messages = reverse(@messages);
     return \@messages;
 };
 

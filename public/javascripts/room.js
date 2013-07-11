@@ -43,7 +43,7 @@ function getMsgs() {
         success: function(data) {
             var i;
             var chatwindow = document.getElementById("chat-window");
-
+            data.reverse();
             for (i = 0; i < data.length; i++) {
                 var date = new Date();
                 date.setTime(data[i].sendtime * 1000);
