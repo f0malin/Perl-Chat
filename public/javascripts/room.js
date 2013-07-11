@@ -26,7 +26,7 @@ $("#content").on("keypress", function(e) {
     }
 });
 
-$("#clear_msgs").on("click",function(){$("#chat-window").empty(); });
+$("#clear_msgs").on("click",function(){$("#chat-window").empty(); document.getElementById("chat-window").scrollTop = lastScroll = 0;});
 
 $("#content").focus();
 

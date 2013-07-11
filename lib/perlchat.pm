@@ -5,7 +5,7 @@ use Digest::SHA1 qw(sha1_hex);
 use MongoDB;
 use URI::Escape::JavaScript;
 use Time::HiRes qw(time);
-
+use Data::Dumper qw(Dumper);
 our $VERSION = '0.1';
 
 our $_db;
@@ -133,7 +133,9 @@ get "/api/getmessages/:roomid/:subject/:laststamp" => sub {
     if ($subject ne "all") {
         $condition->{'subject'} = $subject;
     }
-    my @messages = db->get_collection("messages")->find($condition)->sort({sendtime => 1})->all();
+    #my @messages = db->get_collection("messages")->find($condition)->sort({sendtime => 1})->all();
+    my @messages = db->get_collection("messages")->find($condition)->sort({sendtime => -1})->limit(10)->all();
+       @messages = reverse(@messages);
     return \@messages;
 };
 
@@ -145,9 +147,7 @@ get "/api/getsubjects/:roomid" => sub {
 };
 
 get '/loginout'=> sub{
-    if (session('nick')) {
-        session 'nick' => undef;
-    }
+    session->destroy;
     redirect "/login";
 };
 
