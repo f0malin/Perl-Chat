@@ -99,7 +99,7 @@ post "/api/sendmsg" => sub {
     my $nick = session("nick");
     if ($uid && $nick) {
         my $subject;
-        if (param("msg") =~ /#(.*?)#/) {
+        if (param("msg") =~ /#([^\/]*?)#/) {
             $subject = $1;
             db->get_collection("messages")->insert({subject => $subject, uid => $uid, nick => $nick, msg => param("msg"), roomid => param("roomid"), sendtime => time});
             my $val = db->get_collection("subjects")->update(
