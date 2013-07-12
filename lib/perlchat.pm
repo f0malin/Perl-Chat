@@ -83,7 +83,7 @@ get "/room/:roomid/:subject?" => sub {
     my $room = db->get_collection("rooms")->find_one({_id => MongoDB::OID->new(value => param("roomid"))});
     my $subject = param("subject");
     if ($subject) {
-        $subject = js_unescape($subject);
+#        $subject = js_unescape($subject);
     } else {
         $subject = "";
     }

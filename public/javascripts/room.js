@@ -76,7 +76,7 @@ function getSubject() {
             var content = "<a href='/room/" + roomid + "/'>全部</a><br/>";
             var i;
             for (i = 0; i < data.length; i++) {
-                content += '<a href="/room/' + roomid + '/' + escape(data[i].title) + '">' + escapeHtml(data[i].title) + "</a><br/>";
+                content += '<a href="/room/' + roomid + '/' + encodeURIComponent(data[i].title) + '">' + escapeHtml(data[i].title) + "</a><br/>";
             }
             subject_window.html(content);
         },
