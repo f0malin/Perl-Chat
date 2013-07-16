@@ -14,8 +14,7 @@
   <div class="span8">
     <h2><% room.name %> <small><% IF subject %>- <% subject %><% ELSE %>- 全部<% END %> </small>  <small>-
     <a href="javascript:void(0)" id="clear_msgs">清空消息</a>
-
-    </small></h2>
+    </small><small>- <input type="text" size="20" maxlength="50" id="keywords" name="keywords" /></small></h2>
     <div id="chat-window">
     </div>
     <p> </p>

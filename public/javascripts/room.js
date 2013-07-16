@@ -2,6 +2,8 @@ var getting_message = false;
 var laststamp = 0;
 
 var roomid;
+var keysdb = new Array();
+
 var esubject; {
     var matches = window.location.href.match(/\/room\/([0-9a-f]+)\/(.*)/);
     roomid = matches[1];
@@ -114,6 +116,9 @@ var matchURL = new RegExp("((?:http|https|ftp|mms|rtsp)://(&(?=amp;)|[A-Za-z0-9\
 function do_filters(str) {
     str = escapeHtml(str);
     find_at(str);
+	if(find_keys(str,keysdb) == true){
+	   show_message('information',str);	
+	}
     if (matchPIC.test(str)) {
         str = (str.replace(matchPIC, "<img src=\"$1\" hint=\"$1\"></img>"));
     } else {
@@ -168,3 +173,46 @@ function find_at(str) {
              }
          });
      })(jQuery);
+
+function find_keys(str,keys){
+    for(k=str.length;k>0;k--){//控制循环次数
+     label:
+     for(j=6;j>0;j--)//通过最大关键字长度控制循环
+     {
+      var strkey = str.substr(k-j, j);
+      //确定预检索字符串 strl-j 是位置 j是长度
+      for(i=0;i<keys.length;i++)//通过关键字字库的数量确定循环次数
+      {
+         if(keys[i]==strkey){//如果现有关键字与字库匹配
+           return true;
+           //k-=j;
+           //k++;
+           //break label;
+      }
+     }
+    } 
+  }
+}
+
+function show_message(type,message) {
+  	var n = noty({
+  		text: message,
+  		type: type,
+        dismissQueue: true,
+  		layout: 'bottomRight',
+  		theme: 'defaultTheme',
+		template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+		animation: {
+		open: {height: 'toggle'},
+		close: {height: 'toggle'},
+		easing: 'swing',
+		speed: 500, // opening & closing animation speed
+		closeWith: ['click'], // ['click', 'button', 'hover']
+		buttons: false
+	},
+  	});
+  }
+
+$("#keywords").focusout(function(){
+	keysdb = $("#keywords").val().split(',');
+});

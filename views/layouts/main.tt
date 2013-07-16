@@ -33,7 +33,10 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/javascripts/jquery-1.10.1.min.js"></script>
     <script src="/bootstrap/js/bootstrap.min.js"></script>
-
+    <script type="text/javascript" src="/javascripts/noty/jquery.noty.js"></script>
+    <script type="text/javascript" src="/javascripts/noty/layouts/bottomRight.js"></script>
+    <!-- themes -->
+    <script type="text/javascript" src="/javascripts/noty/themes/default.js"></script>
   </head>
 
   <body>
